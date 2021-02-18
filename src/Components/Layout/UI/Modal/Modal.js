@@ -6,7 +6,7 @@ import classes from "./Modal.module.css";
 const Modal = (props) => {
   return (
     <Aux>
-      <Backdrop show={props.ordered} />
+      <Backdrop show={props.ordered} closemodal={props.clickedbackdrop} />
       <div
         className={classes.Modal}
         style={{

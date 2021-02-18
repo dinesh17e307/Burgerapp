@@ -3,7 +3,7 @@ import Layout from "./Components/Layout/Layout";
 import Burgerbuilder from "./Container/BurgerBuilder/Burgerbuilder";
 function App() {
   return (
-    <div className>
+    <div>
       <Layout>
         <Burgerbuilder />
       </Layout>

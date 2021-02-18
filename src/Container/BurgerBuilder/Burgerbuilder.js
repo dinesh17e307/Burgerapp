@@ -25,6 +25,13 @@ export class Burgerbuilder extends Component {
   showmodalhandler = () => {
     this.setState({ ishow: true });
   };
+  cancelmodalhandler = () => {
+    this.setState({ ishow: false });
+  };
+  continueModalHandler = () => {
+    alert("your ordered placed successfully");
+    this.setState({ ishow: false });
+  };
   purchase(ingredient) {
     const sum = Object.keys(ingredient)
       .map((key) => {
@@ -81,10 +88,15 @@ export class Burgerbuilder extends Component {
     }
     return (
       <Aux>
-        <Modal ordered={this.state.ishow}>
+        <Modal
+          ordered={this.state.ishow}
+          clickedbackdrop={this.cancelmodalhandler}
+        >
           <Ordersummary
             ingredient={this.state.ingredient}
             price={this.state.totalprice}
+            close={this.cancelmodalhandler}
+            cont={this.continueModalHandler}
           />
         </Modal>
         <Burger ingredient={this.state.ingredient} />
@@ -94,6 +106,8 @@ export class Burgerbuilder extends Component {
           disabled={disabledinfo}
           purchase={this.state.purchase}
           purchasing={this.showmodalhandler}
+          ordered={this.state.ishow}
+          clickedbackdrop={this.cancelmodalhandler}
           price={this.state.totalprice}
         />
       </Aux>

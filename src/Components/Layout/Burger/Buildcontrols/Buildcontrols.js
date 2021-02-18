@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./Buildcontrols.module.css";
 import Buildcontrol from "./Buildcontrol/Buildcontrol";
+// import Backdrop from "../../UI/Modal/Backdrop/Backdrop";
 
 const controls = [
   { ingredient: "Salad", type: "salad" },
@@ -11,6 +12,7 @@ const controls = [
 const Buildcontrols = (props) => {
   return (
     <div className={classes.Buildcontrols}>
+      {/* <Backdrop show={props.ordered} closemodal={props.clickedbackdrop} /> */}
       <p>
         Current price :<strong> {props.price.toFixed(2)}</strong>
       </p>
