@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Buildcontrols from "../../Components/Layout/Burger/Buildcontrols/Buildcontrols";
 import Burger from "../../Components/Layout/Burger/Burger";
+import Ordersummary from "../../Components/Layout/Burger/Ordersummary/Ordersummary";
+import Modal from "../../Components/Layout/UI/Modal/Modal";
 import Aux from "../../Hoc/Auxiliary";
 const INGREDIENTCOST = {
   salad: 0.5,
@@ -18,8 +20,11 @@ export class Burgerbuilder extends Component {
     },
     totalprice: 10,
     purchase: false,
+    ishow: false,
   };
-
+  showmodalhandler = () => {
+    this.setState({ ishow: true });
+  };
   purchase(ingredient) {
     const sum = Object.keys(ingredient)
       .map((key) => {
@@ -76,12 +81,19 @@ export class Burgerbuilder extends Component {
     }
     return (
       <Aux>
+        <Modal ordered={this.state.ishow}>
+          <Ordersummary
+            ingredient={this.state.ingredient}
+            price={this.state.totalprice}
+          />
+        </Modal>
         <Burger ingredient={this.state.ingredient} />
         <Buildcontrols
           additem={this.onaddhandler}
           removeitem={this.onremovehandler}
           disabled={disabledinfo}
           purchase={this.state.purchase}
+          purchasing={this.showmodalhandler}
           price={this.state.totalprice}
         />
       </Aux>
