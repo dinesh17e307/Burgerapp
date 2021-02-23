@@ -1,0 +1,27 @@
+.Http{
+    
+}
+.box{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+    background-color: cadetblue;
+    height: 200px;
+    width: 300px;
+    margin-top: 10px;
+}
+.fullpost{
+    margin-left: 400px;
+    text-align: center;
+    width: 900px;
+    height: 300px;
+    background-color:lightyellow;
+    border: 1px solid gray;
+}
+.Newpost{
+    
+    width: 500px;
+    height: 300px;
+    background-color: darkslategray;
+    text-align: center;
+}

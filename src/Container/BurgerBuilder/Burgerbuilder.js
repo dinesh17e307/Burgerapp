@@ -4,6 +4,8 @@ import Burger from "../../Components/Layout/Burger/Burger";
 import Ordersummary from "../../Components/Layout/Burger/Ordersummary/Ordersummary";
 import Modal from "../../Components/Layout/UI/Modal/Modal";
 import Aux from "../../Hoc/Auxiliary";
+import axios from "../../Axiox-order";
+import Spinner from "../../Components/Layout/UI/Spinner/Spinner";
 const INGREDIENTCOST = {
   salad: 0.5,
   meat: 1.5,
@@ -21,6 +23,7 @@ export class Burgerbuilder extends Component {
     totalprice: 10,
     purchase: false,
     ishow: false,
+    Loading: false,
   };
   showmodalhandler = () => {
     this.setState({ ishow: true });
@@ -29,8 +32,31 @@ export class Burgerbuilder extends Component {
     this.setState({ ishow: false });
   };
   continueModalHandler = () => {
-    alert("your ordered placed successfully");
+    this.setState({ Loading: true });
+    const Orders = {
+      ingredient: this.state.ingredient,
+      price: this.state.totalprice,
+      customer: {
+        name: "dinesh sellappan",
+        Address: {
+          street: "154.bungala thottam",
+          pincode: 638401,
+          country: "india",
+        },
+        email: "dineshsellappan.com",
+        DeliveryMethod: "fastest",
+      },
+    };
+
     this.setState({ ishow: false });
+    axios
+      .post("/Orders.json", Orders)
+      .then((response) => {
+        this.setState({ Loading: false, ishow: false });
+      })
+      .catch((error) => {
+        this.setState({ Loading: false, ishow: false });
+      });
   };
   purchase(ingredient) {
     const sum = Object.keys(ingredient)
@@ -86,18 +112,24 @@ export class Burgerbuilder extends Component {
       disabledinfo[key] = disabledinfo[key] <= 0;
       console.log(disabledinfo);
     }
+    let ordersummary = (
+      <Ordersummary
+        ingredient={this.state.ingredient}
+        price={this.state.totalprice}
+        close={this.cancelmodalhandler}
+        cont={this.continueModalHandler}
+      />
+    );
+    if (this.state.Loading) {
+      ordersummary = <Spinner />;
+    }
     return (
       <Aux>
         <Modal
           ordered={this.state.ishow}
           clickedbackdrop={this.cancelmodalhandler}
         >
-          <Ordersummary
-            ingredient={this.state.ingredient}
-            price={this.state.totalprice}
-            close={this.cancelmodalhandler}
-            cont={this.continueModalHandler}
-          />
+          {ordersummary}
         </Modal>
         <Burger ingredient={this.state.ingredient} />
         <Buildcontrols
