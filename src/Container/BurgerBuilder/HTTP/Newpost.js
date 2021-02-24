@@ -7,6 +7,9 @@ export class Newpost extends Component {
     content: "",
     author: "dinesh",
   };
+  componentDidMount = () => {
+    console.log(this.props);
+  };
   postdatahandler = () => {
     const posts = {
       title: this.state.title,

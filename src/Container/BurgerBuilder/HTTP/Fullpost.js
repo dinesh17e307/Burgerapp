@@ -6,14 +6,15 @@ class Fullpost extends React.Component {
     loadedpost: null,
   };
 
-  componentDidUpdate = () => {
-    if (this.props.selectpost) {
+  componentDidMount = () => {
+    console.log(this.props);
+    if (this.props.match.params.id) {
       if (
         !this.state.loadedpost ||
         (this.state.loadedpost &&
           this.state.loadedpost.id !== this.props.selectpost)
       ) {
-        axios.get("/posts/" + this.props.selectpost).then((rep) => {
+        axios.get("/posts/" + this.props.match.params.id).then((rep) => {
           this.setState({
             loadedpost: rep.data,
           });

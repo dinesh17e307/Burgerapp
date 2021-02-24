@@ -1,15 +1,16 @@
 import classes from "./Http.module.css";
 import React from "react";
-
+import { withRouter } from "react-router";
 const Posts = (props) => {
+  console.log(props);
   return (
-    <article className={classes.box}>
-      <ul onClick={props.clicked} className={classes.Http}>
+    <div className={classes.Http}>
+      <ul onClick={props.clicked} className={classes.box}>
         {<li>{props.titl}</li>}
         <li>{props.au}</li>
       </ul>
-    </article>
+    </div>
   );
 };
 
-export default Posts;
+export default withRouter(Posts);

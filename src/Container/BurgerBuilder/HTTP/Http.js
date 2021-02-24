@@ -3,62 +3,44 @@ import axios from "axios";
 import Posts from "./Posts";
 import Fullpost from "./Fullpost";
 import Newpost from "./Newpost";
+import classes from "./Http.module.css";
+import Postroute from "./Postroute";
+import { Route, NavLink, Switch } from "react-router-dom";
 export class Http extends Component {
-  state = {
-    post: [],
-    selectpost: null,
-    errmsg: false,
-  };
-  componentDidMount = () => {
-    axios
-      .get("/posts")
-      .then((rep) => {
-        const postred = rep.data.slice(0, 4);
-        const postupdate = postred.map((ed) => {
-          return {
-            ...ed,
-            author: "dinesh",
-          };
-        });
-        this.setState({
-          post: postupdate,
-        });
-        console.log(rep.data);
-      })
-      .catch((err) => {
-        this.setState({
-          errmsg: true,
-        });
-      });
-  };
-
-  selectposthandler = (id) => {
-    this.setState({
-      selectpost: id,
-    });
-  };
   render() {
-    let posts;
-
-    posts = <p>something went wrong!!!!!!</p>;
-    if (!this.state.errmsg) {
-      posts = this.state.post.map((e) => {
-        return (
-          <Posts
-            titl={e.title}
-            au={e.author}
-            clicked={() => this.selectposthandler(e.id)}
-          />
-        );
-      });
-    }
+    console.log(this.props);
     return (
       <div>
-        {posts}
+        <header>
+          <nav className={classes.blog}>
+            <ul>
+              <li>
+                <NavLink activeClassName={classes.active} exact to="/">
+                  Home
+                </NavLink>
+                <NavLink
+                  activeStyle={{
+                    color: "greenyellow",
+                    textDecoration: "underline",
+                  }}
+                  to={{
+                    pathname: "/new-post",
+                    hash: "#submit",
+                    search: "?quick =true",
+                  }}
+                >
+                  New post
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+        </header>
 
-        <Fullpost selectpost={this.state.selectpost} />
-
-        <Newpost />
+        <Switch>
+          <Route exact path="/" component={Postroute} />
+          <Route path="/new-post" component={Newpost} />
+          <Route path="/:id" exact component={Fullpost} />
+        </Switch>
       </div>
     );
   }
