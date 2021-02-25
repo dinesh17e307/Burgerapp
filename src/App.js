@@ -5,7 +5,7 @@ import Http from "./Container/BurgerBuilder/HTTP/Http";
 import { BrowserRouter } from "react-router-dom";
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/myapp">
       <div>
         {/* <Layout>
         <Burgerbuilder />

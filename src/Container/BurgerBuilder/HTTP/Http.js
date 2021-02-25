@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import axios from "axios";
 import Posts from "./Posts";
 import Fullpost from "./Fullpost";
-import Newpost from "./Newpost";
 import classes from "./Http.module.css";
 import Postroute from "./Postroute";
-import { Route, NavLink, Switch } from "react-router-dom";
+import { Route, NavLink, Switch, Redirect } from "react-router-dom";
+import Asynccomponent from "./Hoc/Asynccomponent";
+const lozyloader = Asynccomponent(() => {
+  return import("./Newpost");
+});
 export class Http extends Component {
+  state = {
+    auth: true,
+  };
   render() {
     console.log(this.props);
     return (
@@ -15,7 +21,7 @@ export class Http extends Component {
           <nav className={classes.blog}>
             <ul>
               <li>
-                <NavLink activeClassName={classes.active} exact to="/">
+                <NavLink activeClassName={classes.active} exact to="/posts">
                   Home
                 </NavLink>
                 <NavLink
@@ -37,9 +43,12 @@ export class Http extends Component {
         </header>
 
         <Switch>
-          <Route exact path="/" component={Postroute} />
-          <Route path="/new-post" component={Newpost} />
-          <Route path="/:id" exact component={Fullpost} />
+          <Route path="/posts" component={Postroute} />
+          {this.state.auth ? (
+            <Route path="/new-post" component={lozyloader} />
+          ) : null}
+          <Route render={() => <h1>not found 404 error</h1>} />
+          {/* <Redirect from="/" to="/posts" /> */}
         </Switch>
       </div>
     );

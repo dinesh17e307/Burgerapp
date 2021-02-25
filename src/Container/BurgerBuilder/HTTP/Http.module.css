@@ -45,6 +45,11 @@ border-radius: 10vmax;
     width: 50%;
    
 }
+.box:hover{
+    background-color: lightskyblue;
+    color: maroon;
+    cursor: pointer;
+}
 
 .blog ul{
     list-style: none;
@@ -78,6 +83,7 @@ border-radius: 10vmax;
 .posts a.active
 {
     color: violet;
+    background-color: burlywood;
 }
 .blog a:hover,
 .blog a:active,

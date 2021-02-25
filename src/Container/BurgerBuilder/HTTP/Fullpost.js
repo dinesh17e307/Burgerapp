@@ -8,11 +8,17 @@ class Fullpost extends React.Component {
 
   componentDidMount = () => {
     console.log(this.props);
+    this.loaddata();
+  };
+  componentDidUpdate() {
+    this.loaddata();
+  }
+  loaddata = () => {
     if (this.props.match.params.id) {
       if (
         !this.state.loadedpost ||
         (this.state.loadedpost &&
-          this.state.loadedpost.id !== this.props.selectpost)
+          this.state.loadedpost.id !== +this.props.match.params.id)
       ) {
         axios.get("/posts/" + this.props.match.params.id).then((rep) => {
           this.setState({
@@ -23,13 +29,13 @@ class Fullpost extends React.Component {
     }
   };
   deleteposthandler = () => {
-    axios.delete("/posts/" + this.props.selectpost).then((rep) => {
+    axios.delete("/posts/" + this.props.match.params.id).then((rep) => {
       console.log(rep);
     });
   };
   render() {
     let post = <p>please select the post</p>;
-    if (this.props.selectpost) {
+    if (this.props.match.params.id) {
       post = <p>Loading....!</p>;
     }
 
