@@ -43,31 +43,38 @@ export class Burgerbuilder extends Component {
     this.setState({ ishow: false });
   };
   continueModalHandler = () => {
-    this.setState({ Loading: true });
-    const Orders = {
-      ingredient: this.state.ingredient,
-      price: this.state.totalprice,
-      customer: {
-        name: "dinesh sellappan",
-        Address: {
-          street: "154.bungala thottam",
-          pincode: 638401,
-          country: "india",
-        },
-        email: "dineshsellappan.com",
-        DeliveryMethod: "fastest",
-      },
-    };
+    // this.setState({ Loading: true });
+    // const Orders = {
+    //   ingredient: this.state.ingredient,
+    //   price: this.state.totalprice,
+    //   customer: {
+    //     name: "dinesh sellappan",
+    //     Address: {
+    //       street: "154.bungala thottam",
+    //       pincode: 638401,
+    //       country: "india",
+    //     },
+    //     email: "dineshsellappan.com",
+    //     DeliveryMethod: "fastest",
+    //   },
+    // };
 
-    this.setState({ ishow: false });
-    axios
-      .post("/Orders.json", Orders)
-      .then((response) => {
-        this.setState({ Loading: false, ishow: false });
-      })
-      .catch((error) => {
-        this.setState({ Loading: false, ishow: false });
-      });
+    // this.setState({ ishow: false });
+    // axios
+    //   .post("/Orders.json", Orders)
+    //   .then((response) => {
+    //     this.setState({ Loading: false, ishow: false });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ Loading: false, ishow: false });
+    //   });
+    let paramingredient = [];
+    paramingredient = this.state.ingredient;
+    const stringparam = paramingredient.join("");
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + stringparam,
+    });
   };
   purchase(ingredient) {
     const sum = Object.keys(ingredient)
