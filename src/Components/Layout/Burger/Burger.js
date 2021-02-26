@@ -12,7 +12,7 @@ const Burger = (props) => {
     .reduce((prev, cur) => {
       return prev.concat(cur);
     });
-  console.log(transingredient);
+
   if (transingredient.length === 0) {
     transingredient = <p>please add ingredient to taste</p>;
   }

@@ -6,7 +6,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Checkout from "./Container/Checkout/Checkout";
 function App() {
   return (
-    <BrowserRouter basename="/myapp">
+    <BrowserRouter>
       <div>
         <Layout>
           <Switch>

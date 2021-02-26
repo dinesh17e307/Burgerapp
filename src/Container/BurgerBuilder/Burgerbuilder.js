@@ -76,7 +76,7 @@ export class Burgerbuilder extends Component {
           encodeURIComponent(this.state.ingredient[i])
       );
     }
-
+    paramingredient.push("price=" + this.state.totalprice);
     const stringparam = paramingredient.join("&");
     this.props.history.push({
       pathname: "/checkout",
@@ -133,9 +133,7 @@ export class Burgerbuilder extends Component {
       ...this.state.ingredient,
     };
     for (let key in disabledinfo) {
-      console.log(key);
       disabledinfo[key] = disabledinfo[key] <= 0;
-      console.log(disabledinfo);
     }
     let ordersummary = null;
     let burger = this.state.error ? (
