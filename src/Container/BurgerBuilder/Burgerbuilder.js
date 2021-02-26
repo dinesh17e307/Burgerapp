@@ -68,9 +68,16 @@ export class Burgerbuilder extends Component {
     //   .catch((error) => {
     //     this.setState({ Loading: false, ishow: false });
     //   });
-    let paramingredient = [];
-    paramingredient = this.state.ingredient;
-    const stringparam = paramingredient.join("");
+    const paramingredient = [];
+    for (let i in this.state.ingredient) {
+      paramingredient.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredient[i])
+      );
+    }
+
+    const stringparam = paramingredient.join("&");
     this.props.history.push({
       pathname: "/checkout",
       search: "?" + stringparam,

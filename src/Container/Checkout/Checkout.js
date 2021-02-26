@@ -10,6 +10,16 @@ export class Checkout extends Component {
       meat: 1,
     },
   };
+  componentDidMount() {
+    const paramingredient = new URLSearchParams(this.props.location.search);
+    const searchingredient = [];
+    for (let param of paramingredient) {
+      searchingredient[param[0]] = +param[1];
+    }
+    this.setState({
+      ingredient: searchingredient,
+    });
+  }
   checkoutcancelhandler = () => {
     this.props.history.goBack();
   };
