@@ -72,17 +72,24 @@ export class Contactform extends Component {
     con = { ...this.props.ingredient };
   }
   onchangeformhandler = (event, formidentifier) => {
-    const updatedorderform = [...this.state.orderform];
-    updatedorderform[formidentifier].value = event.target.value;
+    const updatedorderform = { ...this.state.orderform };
+    const updatedformelement = { ...updatedorderform[formidentifier] };
+    updatedformelement.value = event.target.value;
+    updatedorderform[formidentifier] = updatedformelement;
     this.setState({
       orderform: updatedorderform,
     });
   };
   orderhandler = (event) => {
     event.preventDefault();
-
+    const formdata = {};
+    for (let formidentifier in this.state.orderform) {
+      formdata[formidentifier] = this.state.orderform[formidentifier].value;
+    }
+    const customerdata = { ...formdata };
     this.setState({ loading: true });
     const Orders = {
+      customer: customerdata,
       ingredient: con,
       price: this.props.totalprice,
     };
@@ -99,7 +106,6 @@ export class Contactform extends Component {
   };
 
   render() {
-    console.log(this.state.orderform);
     let orderarray = [];
     for (let key in this.state.orderform) {
       orderarray.push({
@@ -108,7 +114,7 @@ export class Contactform extends Component {
       });
     }
     let form = (
-      <form>
+      <form onSubmit={this.orderhandler}>
         <h1>Enter the contact details</h1>
         {orderarray.map((res) => (
           <Input
@@ -116,12 +122,10 @@ export class Contactform extends Component {
             elementtype={res.config.elementtype}
             elementconfig={res.config.elementconfig}
             value={res.config.value}
-            changed={(event) => this.onchangeformhandler(event.res.id)}
+            changed={(event) => this.onchangeformhandler(event, res.id)}
           />
         ))}
-        <Button btntype="Success" clicked={this.orderhandler}>
-          ORDER
-        </Button>
+        <Button btntype="Success">ORDER</Button>
       </form>
     );
     if (this.state.loading) {
