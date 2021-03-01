@@ -4,7 +4,6 @@ import Burger from "../../Layout/Burger/Burger";
 import Button from "../../Layout/UI/Button/Button";
 
 const Checkoutsummary = (props) => {
-  console.log(props.ingredient);
   return (
     <div className={classes.Checkoutsummary}>
       <h1>taste your burger</h1>
