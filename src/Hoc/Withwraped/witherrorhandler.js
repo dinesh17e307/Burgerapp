@@ -33,7 +33,6 @@ const withErrorhandler = (WrappedComponent, axios) => {
     };
 
     render() {
-      console.log(this.state.ismodal);
       return (
         <Aux>
           <Modal

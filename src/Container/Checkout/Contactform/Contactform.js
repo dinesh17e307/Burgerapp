@@ -15,6 +15,10 @@ export class Contactform extends Component {
           placeholder: "Name",
         },
         value: "",
+        Validation: {
+          required: true,
+        },
+        valid: false,
       },
       street: {
         elementtype: "input",
@@ -23,6 +27,10 @@ export class Contactform extends Component {
           placeholder: "Street",
         },
         value: "",
+        Validation: {
+          required: true,
+        },
+        valid: false,
       },
       pincode: {
         elementtype: "input",
@@ -31,6 +39,12 @@ export class Contactform extends Component {
           placeholder: "Your ZIP code",
         },
         value: "",
+        Validation: {
+          required: true,
+          maxlength: 6,
+          minlength: 5,
+        },
+        valid: false,
       },
       country: {
         elementtype: "input",
@@ -39,6 +53,10 @@ export class Contactform extends Component {
           placeholder: "Country",
         },
         value: "",
+        Validation: {
+          required: true,
+        },
+        valid: false,
       },
       email: {
         elementtype: "input",
@@ -47,6 +65,10 @@ export class Contactform extends Component {
           placeholder: "Your E-mail",
         },
         value: "",
+        Validation: {
+          required: true,
+        },
+        valid: false,
       },
       DeliveryMethod: {
         elementtype: "select",
@@ -68,6 +90,19 @@ export class Contactform extends Component {
 
     loading: false,
   };
+  checkvalid(value, rules) {
+    let isvalid = true;
+    if (rules.required) {
+      isvalid = value.trim() !== "" && isvalid;
+    }
+    if (rules.minlength) {
+      isvalid = value.length >= rules.minlength && isvalid;
+    }
+    if (rules.maxlength) {
+      isvalid = value.length <= rules.maxlength && isvalid;
+    }
+    return isvalid;
+  }
   componentDidMount() {
     con = { ...this.props.ingredient };
   }
@@ -75,7 +110,12 @@ export class Contactform extends Component {
     const updatedorderform = { ...this.state.orderform };
     const updatedformelement = { ...updatedorderform[formidentifier] };
     updatedformelement.value = event.target.value;
+    updatedformelement.valid = this.checkvalid(
+      updatedformelement.value,
+      updatedformelement.Validation
+    );
     updatedorderform[formidentifier] = updatedformelement;
+    console.log(updatedformelement);
     this.setState({
       orderform: updatedorderform,
     });
@@ -122,6 +162,8 @@ export class Contactform extends Component {
             elementtype={res.config.elementtype}
             elementconfig={res.config.elementconfig}
             value={res.config.value}
+            invalid={!res.config.valid}
+            shouldvalidate={res.config.Validation}
             changed={(event) => this.onchangeformhandler(event, res.id)}
           />
         ))}
