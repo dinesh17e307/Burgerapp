@@ -4,7 +4,7 @@ import React from "react";
 const Input = (props) => {
   let inputelement = null;
   let inputclass = [classes.Inputelement];
-  if (props.invalid && props.shouldvalidate) {
+  if (props.invalid && props.shouldvalidate && props.touched) {
     inputclass.push(classes.Invalid);
   }
   switch (props.elementtype) {
@@ -21,7 +21,7 @@ const Input = (props) => {
     case "textarea":
       inputelement = (
         <textarea
-          className={classes.Inputelement}
+          className={inputclass.join(" ")}
           {...props.elementconfig}
           value={props.value}
           onChange={props.changed}
@@ -31,7 +31,8 @@ const Input = (props) => {
     case "select":
       inputelement = (
         <select
-          className={classes.Inputelement}
+          style={{ height: "35px" }}
+          className={inputclass.join(" ")}
           value={props.value}
           onChange={props.changed}
         >
@@ -46,7 +47,7 @@ const Input = (props) => {
     default:
       inputelement = (
         <input
-          className={classes.Inputelement}
+          className={inputclass.join(" ")}
           {...props.elementconfig}
           value={props.value}
           onChange={props.changed}

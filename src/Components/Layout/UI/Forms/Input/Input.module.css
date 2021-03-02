@@ -19,6 +19,9 @@
    display: block;
    color: black;
 }
+.select{
+    height: 35px;
+}
 .Inputelement:focus{
     outline:none;
     background-color:#ccc;
