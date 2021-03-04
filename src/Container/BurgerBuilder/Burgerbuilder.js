@@ -7,6 +7,8 @@ import withErrorhandler from "../../Hoc/Withwraped/witherrorhandler";
 import Aux from "../../Hoc/Auxiliary";
 import axios from "../../Axiox-order";
 import Spinner from "../../Components/Layout/UI/Spinner/Spinner";
+import * as actiontypes from "./../../Store/action";
+import { connect } from "react-redux";
 const INGREDIENTCOST = {
   salad: 0.5,
   meat: 1.5,
@@ -15,7 +17,6 @@ const INGREDIENTCOST = {
 };
 export class Burgerbuilder extends Component {
   state = {
-    ingredient: null,
     totalprice: 10,
     purchase: false,
     ishow: false,
@@ -23,18 +24,18 @@ export class Burgerbuilder extends Component {
     error: false,
   };
   componentDidMount() {
-    axios
-      .get("/ingredient.json")
-      .then((response) => {
-        this.setState({
-          ingredient: response.data,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: true,
-        });
-      });
+    // axios
+    //   .get("/ingredient.json")
+    //   .then((response) => {
+    //     this.setState({
+    //       ingredient: response.data,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({
+    //       error: true,
+    //     });
+    //   });
   }
   showmodalhandler = () => {
     this.setState({ ishow: true });
@@ -130,7 +131,7 @@ export class Burgerbuilder extends Component {
   };
   render() {
     const disabledinfo = {
-      ...this.state.ingredient,
+      ...this.props.ings,
     };
     for (let key in disabledinfo) {
       disabledinfo[key] = disabledinfo[key] <= 0;
@@ -141,13 +142,13 @@ export class Burgerbuilder extends Component {
     ) : (
       <Spinner />
     );
-    if (this.state.ingredient) {
+    if (this.props.ings) {
       burger = (
         <Aux>
-          <Burger ingredient={this.state.ingredient} />
+          <Burger ingredient={this.props.ings} />
           <Buildcontrols
-            additem={this.onaddhandler}
-            removeitem={this.onremovehandler}
+            additem={this.props.oningredientadd}
+            removeitem={this.props.oningredientremove}
             disabled={disabledinfo}
             purchase={this.state.purchase}
             purchasing={this.showmodalhandler}
@@ -159,7 +160,7 @@ export class Burgerbuilder extends Component {
       );
       ordersummary = (
         <Ordersummary
-          ingredient={this.state.ingredient}
+          ingredient={this.props.ings}
           price={this.state.totalprice}
           close={this.cancelmodalhandler}
           cont={this.continueModalHandler}
@@ -183,5 +184,24 @@ export class Burgerbuilder extends Component {
     );
   }
 }
+const mapstatetoprops = (state) => {
+  return {
+    ings: state.ingredients,
+  };
+};
+const mapdispatchtoprops = (dispatch) => {
+  return {
+    oningredientadd: (ingname) =>
+      dispatch({ type: actiontypes.ADD_INGREDIENT, ingredientname: ingname }),
+    oningredientremove: (ingname) =>
+      dispatch({
+        type: actiontypes.REMOVE_INGREDIENT,
+        ingredientname: ingname,
+      }),
+  };
+};
 
-export default withErrorhandler(Burgerbuilder, axios);
+export default connect(
+  mapstatetoprops,
+  mapdispatchtoprops
+)(withErrorhandler(Burgerbuilder, axios));

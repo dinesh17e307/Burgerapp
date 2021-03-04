@@ -8,12 +8,15 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./Store/reducer";
 import axios from "axios";
+import { BrowserRouter } from "react-router-dom";
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
 
 const store = createStore(reducer);
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );
