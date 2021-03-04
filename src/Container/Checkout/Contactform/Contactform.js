@@ -4,6 +4,7 @@ import Button from "../../../Components/Layout/UI/Button/Button";
 import axios from "../../../Axiox-order";
 import Spinner from "../../../Components/Layout/UI/Spinner/Spinner";
 import Input from "../../../Components/Layout/UI/Forms/Input/Input";
+import { connect } from "react-redux";
 let con;
 export class Contactform extends Component {
   state = {
@@ -112,7 +113,7 @@ export class Contactform extends Component {
     return isvalid;
   }
   componentDidMount() {
-    con = { ...this.props.ingredient };
+    con = { ...this.props.ings };
   }
   onchangeformhandler = (event, formidentifier) => {
     const updatedorderform = { ...this.state.orderform };
@@ -145,7 +146,7 @@ export class Contactform extends Component {
     const Orders = {
       customer: customerdata,
       ingredient: con,
-      price: this.props.totalprice,
+      price: this.props.prc,
     };
 
     axios
@@ -193,5 +194,10 @@ export class Contactform extends Component {
     return <div className={classes.Contactform}>{form}</div>;
   }
 }
-
-export default Contactform;
+const mapstatetoprops = (state) => {
+  return {
+    ings: state.ingredients,
+    prc: state.totalprice,
+  };
+};
+export default connect(mapstatetoprops)(Contactform);
