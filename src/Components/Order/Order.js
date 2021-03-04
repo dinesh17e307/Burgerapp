@@ -25,6 +25,7 @@ const Order = (props) => {
   });
   return (
     <div className={classes.Order}>
+      <p>Customer Name: {props.customer.name}</p>
       <p>ingredients:{order}</p>
       <p>
         Price:<strong>{props.price.toFixed(2)}</strong>
