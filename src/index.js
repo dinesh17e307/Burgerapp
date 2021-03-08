@@ -5,15 +5,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import burgerbuilderreducer from "./Store/reducers/Burgerbuilder";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
+import thunk from "redux-thunk";
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
-
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   burgerbuilderreducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(thunk))
 );
 ReactDOM.render(
   <Provider store={store}>

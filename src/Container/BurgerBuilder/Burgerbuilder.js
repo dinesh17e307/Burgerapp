@@ -13,22 +13,9 @@ import { connect } from "react-redux";
 export class Burgerbuilder extends Component {
   state = {
     ishow: false,
-    Loading: false,
-    error: false,
   };
   componentDidMount() {
-    // axios
-    //   .get("/ingredient.json")
-    //   .then((response) => {
-    //     this.setState({
-    //       ingredient: response.data,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({
-    //       error: true,
-    //     });
-    //   });
+    this.props.initingredient();
   }
   showmodalhandler = () => {
     this.setState({ ishow: true });
@@ -57,7 +44,7 @@ export class Burgerbuilder extends Component {
       disabledinfo[key] = disabledinfo[key] <= 0;
     }
     let ordersummary = null;
-    let burger = this.state.error ? (
+    let burger = this.props.error ? (
       <p>ingredients cant loaded</p>
     ) : (
       <Spinner />
@@ -87,10 +74,6 @@ export class Burgerbuilder extends Component {
         />
       );
     }
-
-    if (this.state.Loading) {
-      ordersummary = <Spinner />;
-    }
     return (
       <Aux>
         <Modal
@@ -108,6 +91,7 @@ const mapstatetoprops = (state) => {
   return {
     ings: state.ingredients,
     prc: state.totalprice,
+    error: state.error,
   };
 };
 const mapdispatchtoprops = (dispatch) => {
@@ -116,6 +100,7 @@ const mapdispatchtoprops = (dispatch) => {
       dispatch(burgerbiulderactions.addIngredient(ingname)),
     oningredientremove: (ingname) =>
       dispatch(burgerbiulderactions.removeIngredient(ingname)),
+    initingredient: () => dispatch(burgerbiulderactions.initingredient()),
   };
 };
 
