@@ -1,4 +1,4 @@
-import * as actiontypes from "./action";
+import * as actiontypes from "./../actions/actionTypes";
 
 const INGREDIENTCOST = {
   salad: 0.5,
