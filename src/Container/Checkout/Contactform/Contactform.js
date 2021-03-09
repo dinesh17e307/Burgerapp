@@ -5,6 +5,9 @@ import axios from "../../../Axiox-order";
 import Spinner from "../../../Components/Layout/UI/Spinner/Spinner";
 import Input from "../../../Components/Layout/UI/Forms/Input/Input";
 import { connect } from "react-redux";
+import withErrorhandler from "../../../Hoc/Withwraped/witherrorhandler";
+import * as orderactions from "../../../Store/actions/index";
+
 let con;
 export class Contactform extends Component {
   state = {
@@ -96,7 +99,6 @@ export class Contactform extends Component {
       },
     },
 
-    loading: false,
     formvalid: false,
   };
   checkvalid(value, rules) {
@@ -148,16 +150,7 @@ export class Contactform extends Component {
       ingredient: con,
       price: this.props.prc,
     };
-
-    axios
-      .post("/Orders.json", Orders)
-      .then((response) => {
-        this.setState({ loading: false });
-        this.props.history.push("/");
-      })
-      .catch((error) => {
-        this.setState({ loading: false });
-      });
+    this.props.onorderburger(Orders);
   };
 
   render() {
@@ -188,7 +181,7 @@ export class Contactform extends Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return <div className={classes.Contactform}>{form}</div>;
@@ -198,6 +191,16 @@ const mapstatetoprops = (state) => {
   return {
     ings: state.ingredients,
     prc: state.totalprice,
+    loading: state.loading,
   };
 };
-export default connect(mapstatetoprops)(Contactform);
+const mapdispatchtoprops = (dispatch) => {
+  return {
+    onorderburger: (orderdata) =>
+      dispatch(orderactions.purchaseburger(orderdata)),
+  };
+};
+export default connect(
+  mapstatetoprops,
+  mapdispatchtoprops
+)(withErrorhandler(Contactform, axios));
