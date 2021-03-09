@@ -21,14 +21,21 @@ export const purchaseburgerstart = () => {
 export const purchaseburger = (orderdata) => {
   return (dispatch) => {
     dispatch(purchaseburgerstart());
+
     axios
       .post("/Orders.json", orderdata)
       .then((response) => {
-        console.loglog(response.data);
-        dispatch(purchaseburgersuccess(response.data, orderdata));
+        console.log(response.data);
+
+        dispatch(purchaseburgersuccess(response.data.name, orderdata));
       })
       .catch((error) => {
         dispatch(purchaseburgerfail(error));
       });
+  };
+};
+export const purchaseinit = () => {
+  return {
+    type: actiontypes.PURCHASE_INIT,
   };
 };

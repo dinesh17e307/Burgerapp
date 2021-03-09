@@ -7,6 +7,7 @@ import Input from "../../../Components/Layout/UI/Forms/Input/Input";
 import { connect } from "react-redux";
 import withErrorhandler from "../../../Hoc/Withwraped/witherrorhandler";
 import * as orderactions from "../../../Store/actions/index";
+import * as actions from "../../../Store/actions/Order";
 
 let con;
 export class Contactform extends Component {
@@ -189,12 +190,13 @@ export class Contactform extends Component {
 }
 const mapstatetoprops = (state) => {
   return {
-    ings: state.ingredients,
-    prc: state.totalprice,
-    loading: state.loading,
+    ings: state.burgerbuilder.ingredients,
+    prc: state.burgerbuilder.totalprice,
+    loading: state.order.loading,
   };
 };
 const mapdispatchtoprops = (dispatch) => {
+  console.log(actions.purchaseburgerstart());
   return {
     onorderburger: (orderdata) =>
       dispatch(orderactions.purchaseburger(orderdata)),

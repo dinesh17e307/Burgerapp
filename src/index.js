@@ -5,15 +5,20 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import burgerbuilderreducer from "./Store/reducers/Burgerbuilder";
+import orderreducer from "./Store/reducers/Order";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import thunk from "redux-thunk";
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const rootreducer = combineReducers({
+  burgerbuilder: burgerbuilderreducer,
+  order: orderreducer,
+});
 const store = createStore(
-  burgerbuilderreducer,
+  rootreducer,
   composeEnhancers(applyMiddleware(thunk))
 );
 ReactDOM.render(
