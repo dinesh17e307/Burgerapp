@@ -1,5 +1,5 @@
 import * as actiontypes from "./../actions/actionTypes";
-
+import { updateobject } from "../utilitty";
 const INGREDIENTCOST = {
   salad: 0.5,
   meat: 1.5,
@@ -14,35 +14,37 @@ const initialstate = {
 const reducer = (state = initialstate, action) => {
   switch (action.type) {
     case actiontypes.ADD_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientname]: state.ingredients[action.ingredientname] + 1,
-        },
+      const updatedingredient = {
+        [action.ingredientname]: state.ingredients[action.ingredientname] + 1,
+      };
+      const updatedingredients = updateobject(
+        state.ingredients,
+        updatedingredient
+      );
+      const updatestate = {
+        ingredients: updatedingredients,
         totalprice: state.totalprice + INGREDIENTCOST[action.ingredientname],
       };
+      return updateobject(state, updatestate);
     case actiontypes.REMOVE_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientname]: state.ingredients[action.ingredientname] - 1,
-        },
-        totalprice: state.totalprice - INGREDIENTCOST[action.ingredientname],
+      const updatedings = {
+        [action.ingredientname]: state.ingredients[action.ingredientname] - 1,
       };
+      const updateings = updateobject(state.ingredients, updatedings);
+      const updatest = {
+        ingredients: updateings,
+        totalprice: state.totalprice + INGREDIENTCOST[action.ingredientname],
+      };
+      return updateobject(state, updatest);
     case actiontypes.SET_INGREDIENT:
-      return {
-        ...state,
+      return updateobject(state, {
         ingredients: action.ingredients,
         totalprice: 4,
         error: false,
-      };
+      });
+
     case actiontypes.FETCHINGREDIENT_FAILED:
-      return {
-        ...state,
-        error: true,
-      };
+      return updateobject(state, { error: true });
 
     default:
       return state;
