@@ -56,12 +56,12 @@ export const fetchorderstart = () => {
     type: actiontypes.FETCHORDER_START,
   };
 };
-export const fetchorders = () => {
+export const fetchorders = (token) => {
   return (dispatch) => {
     dispatch(fetchorderstart());
 
     axios
-      .get("/Orders.json")
+      .get("/Orders.json?auth=" + token)
       .then((res) => {
         let fetchedorder = [];
         for (let key in res.data) {

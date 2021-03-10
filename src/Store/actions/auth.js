@@ -1,5 +1,18 @@
 import * as actiontypes from "../actions/actionTypes";
 import axios from "axios";
+
+export const logout = () => {
+  return {
+    type: actiontypes.AUTH_LOGOUT,
+  };
+};
+export const checkAuthtimeout = (authentictime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, authentictime * 1000);
+  };
+};
 export const authstart = () => {
   return {
     type: actiontypes.AUTH_START,
@@ -37,6 +50,7 @@ export const auth = (email, password, signup) => {
       .then((res) => {
         console.log(res.data);
         dispatch(authsuccess(res.data.idToken, res.data.localId));
+        dispatch(checkAuthtimeout(res.data.expiresIn));
       })
       .catch((err) => {
         console.log(err);
