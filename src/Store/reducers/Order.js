@@ -11,43 +11,25 @@ const reducer = (state = initialstate, action) => {
     case actionTypes.FETCHORDER_START:
       return updateobject(state, { loading: true });
     case actionTypes.FETCHORDER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        orders: action.orders,
-      };
+      return updateobject(state, { loading: false, orders: action.orders });
     case actionTypes.FETCHORDER_FAIL:
-      return {
-        ...state,
-        loading: false,
-      };
-    case actionTypes.PURCHASE_INIT:
-      return {
-        ...state,
-        purchased: false,
-      };
-    case actionTypes.PURCHASE_BURGER_START:
-      return {
-        ...state,
-        loading: true,
-      };
-    case actionTypes.PURCHASE_BURGER_SUCCESS:
-      const neworders = {
-        ...action.orderdata,
-        id: action.orderid,
-      };
+      return updateobject(state, { loading: false });
 
-      return {
-        ...state,
+    case actionTypes.PURCHASE_INIT:
+      return updateobject(state, { purchased: false });
+
+    case actionTypes.PURCHASE_BURGER_START:
+      return updateobject(state, { loading: true });
+    case actionTypes.PURCHASE_BURGER_SUCCESS:
+      const neworders = updateobject(action.orderdata, { id: action.orderid });
+
+      return updateobject(state, {
         loading: false,
         purchased: true,
         orders: state.orders.concat(neworders),
-      };
+      });
     case actionTypes.PURCHASE_BURGER_FAIL:
-      return {
-        ...state,
-        loading: false,
-      };
+      return updateobject(state, { loading: false });
     default:
       return state;
   }

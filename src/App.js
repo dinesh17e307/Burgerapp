@@ -5,6 +5,7 @@ import Http from "./Container/BurgerBuilder/HTTP/Http";
 import { Route, Switch } from "react-router-dom";
 import Checkout from "./Container/Checkout/Checkout";
 import Orders from "./Components/Orders/Orders";
+import Auth from "./Container/Auth/Auth";
 function App() {
   return (
     <div>
@@ -12,6 +13,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Burgerbuilder} />
           <Route exact path="/orders" component={Orders} />
+          <Route exact path="/auth" component={Auth} />
           {/* <Route path="/burger" component={Burgerbuilder} /> */}
           <Route path="/checkout" component={Checkout} />
           {/* <Redirect from="/" to="/burger" /> */}

@@ -113,6 +113,15 @@ export class Contactform extends Component {
     if (rules.maxlength) {
       isvalid = value.length <= rules.maxlength && isvalid;
     }
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isvalid = pattern.test(value) && isvalid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isvalid = pattern.test(value) && isvalid;
+    }
     return isvalid;
   }
   componentDidMount() {
