@@ -159,6 +159,7 @@ export class Contactform extends Component {
       customer: customerdata,
       ingredient: con,
       price: this.props.prc,
+      user: this.props.userid,
     };
     this.props.onorderburger(Orders, this.props.token);
   };
@@ -203,6 +204,7 @@ const mapstatetoprops = (state) => {
     prc: state.burgerbuilder.totalprice,
     loading: state.order.loading,
     token: state.Auth.tokenid,
+    userid: state.Auth.userid,
   };
 };
 const mapdispatchtoprops = (dispatch) => {
