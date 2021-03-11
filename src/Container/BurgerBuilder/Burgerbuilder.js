@@ -18,7 +18,11 @@ export class Burgerbuilder extends Component {
     this.props.initingredient();
   }
   showmodalhandler = () => {
-    this.setState({ ishow: true });
+    if (this.props.isauth) {
+      this.setState({ ishow: true });
+    } else {
+      this.props.history.push("/auth");
+    }
   };
   cancelmodalhandler = () => {
     this.setState({ ishow: false });
@@ -62,6 +66,7 @@ export class Burgerbuilder extends Component {
             purchasing={this.showmodalhandler}
             ordered={this.state.ishow}
             clickedbackdrop={this.cancelmodalhandler}
+            isauth={this.props.isauth}
             price={this.props.prc}
           />
         </Aux>
@@ -93,6 +98,7 @@ const mapstatetoprops = (state) => {
     ings: state.burgerbuilder.ingredients,
     prc: state.burgerbuilder.totalprice,
     error: state.burgerbuilder.error,
+    isauth: state.Auth.tokenid !== null,
   };
 };
 const mapdispatchtoprops = (dispatch) => {
