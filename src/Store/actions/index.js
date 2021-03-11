@@ -4,4 +4,9 @@ export {
   initingredient,
 } from "../actions/burgerbuilder";
 export { purchaseburger, purchaseinit, fetchorders } from "../actions/Order";
-export { auth, logout } from "../actions/auth";
+export {
+  auth,
+  logout,
+  setauthredirectpath,
+  authcheckstate,
+} from "../actions/auth";
