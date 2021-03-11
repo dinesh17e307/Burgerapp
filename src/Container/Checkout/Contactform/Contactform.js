@@ -160,7 +160,7 @@ export class Contactform extends Component {
       ingredient: con,
       price: this.props.prc,
     };
-    this.props.onorderburger(Orders);
+    this.props.onorderburger(Orders, this.props.token);
   };
 
   render() {
@@ -202,13 +202,14 @@ const mapstatetoprops = (state) => {
     ings: state.burgerbuilder.ingredients,
     prc: state.burgerbuilder.totalprice,
     loading: state.order.loading,
+    token: state.Auth.tokenid,
   };
 };
 const mapdispatchtoprops = (dispatch) => {
   console.log(actions.purchaseburgerstart());
   return {
-    onorderburger: (orderdata) =>
-      dispatch(orderactions.purchaseburger(orderdata)),
+    onorderburger: (orderdata, token) =>
+      dispatch(orderactions.purchaseburger(orderdata, token)),
   };
 };
 export default connect(

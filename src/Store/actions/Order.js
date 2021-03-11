@@ -18,12 +18,12 @@ export const purchaseburgerstart = () => {
     type: actiontypes.PURCHASE_BURGER_START,
   };
 };
-export const purchaseburger = (orderdata) => {
+export const purchaseburger = (orderdata, token) => {
   return (dispatch) => {
     dispatch(purchaseburgerstart());
 
     axios
-      .post("/Orders.json", orderdata)
+      .post("/Orders.json?auth=" + token, orderdata)
       .then((response) => {
         console.log(response.data);
 
