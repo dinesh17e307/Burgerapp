@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import withErrorhandler from "../../../Hoc/Withwraped/witherrorhandler";
 import * as orderactions from "../../../Store/actions/index";
 import * as actions from "../../../Store/actions/Order";
+import { updateobject, checkvalid } from "../../../shared/utilitty";
 
 let con;
 export class Contactform extends Component {
@@ -50,6 +51,7 @@ export class Contactform extends Component {
           required: true,
           maxlength: 6,
           minlength: 5,
+          isNumeric: true,
         },
         valid: false,
         touch: false,
@@ -76,6 +78,7 @@ export class Contactform extends Component {
         value: "",
         Validation: {
           required: true,
+          isEmail: true,
         },
         valid: false,
         touch: false,
@@ -102,42 +105,26 @@ export class Contactform extends Component {
 
     formvalid: false,
   };
-  checkvalid(value, rules) {
-    let isvalid = true;
-    if (rules.required) {
-      isvalid = value.trim() !== "" && isvalid;
-    }
-    if (rules.minlength) {
-      isvalid = value.length >= rules.minlength && isvalid;
-    }
-    if (rules.maxlength) {
-      isvalid = value.length <= rules.maxlength && isvalid;
-    }
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isvalid = pattern.test(value) && isvalid;
-    }
 
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isvalid = pattern.test(value) && isvalid;
-    }
-    return isvalid;
-  }
   componentDidMount() {
     con = { ...this.props.ings };
   }
   onchangeformhandler = (event, formidentifier) => {
-    const updatedorderform = { ...this.state.orderform };
-    const updatedformelement = { ...updatedorderform[formidentifier] };
-    updatedformelement.value = event.target.value;
-    updatedformelement.touch = true;
-    updatedformelement.valid = this.checkvalid(
-      updatedformelement.value,
-      updatedformelement.Validation
+    const updatedformelement = updateobject(
+      this.state.orderform[formidentifier],
+      {
+        value: event.target.value,
+        touch: true,
+        valid: checkvalid(
+          event.target.value,
+          this.state.orderform[formidentifier].Validation
+        ),
+      }
     );
-    updatedorderform[formidentifier] = updatedformelement;
-    console.log(updatedformelement);
+    const updatedorderform = updateobject(this.state.orderform, {
+      [formidentifier]: updatedformelement,
+    });
+
     let formvalidat = true;
     for (let item in updatedorderform) {
       formvalidat = updatedorderform[item].valid && formvalidat;
@@ -208,7 +195,6 @@ const mapstatetoprops = (state) => {
   };
 };
 const mapdispatchtoprops = (dispatch) => {
-  console.log(actions.purchaseburgerstart());
   return {
     onorderburger: (orderdata, token) =>
       dispatch(orderactions.purchaseburger(orderdata, token)),

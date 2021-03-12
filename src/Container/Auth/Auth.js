@@ -6,7 +6,7 @@ import * as actions from "../../Store/actions/index";
 import { connect } from "react-redux";
 import Spinner from "./../../Components/Layout/UI/Spinner/Spinner";
 import { Redirect } from "react-router";
-
+import { updateobject, checkvalid } from "../../shared/utilitty";
 export class Auth extends Component {
   state = {
     controls: {
@@ -46,46 +46,23 @@ export class Auth extends Component {
       this.props.onsetredirectpath();
     }
   }
-  checkvalid(value, rules) {
-    let isvalid = true;
-    if (rules.required) {
-      isvalid = value.trim() !== "" && isvalid;
-    }
-    if (rules.minlength) {
-      isvalid = value.length >= rules.minlength && isvalid;
-    }
-    if (rules.maxlength) {
-      isvalid = value.length <= rules.maxlength && isvalid;
-    }
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isvalid = pattern.test(value) && isvalid;
-    }
 
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isvalid = pattern.test(value) && isvalid;
-    }
-    return isvalid;
-  }
   onauthswitchmodehandler = () => {
     this.setState((prevState) => {
       return { issignup: !prevState.issignup };
     });
   };
   onchangeformhandler = (event, controlname) => {
-    const updatedcontrols = {
-      ...this.state.controls,
-      [controlname]: {
-        ...this.state.controls[controlname],
+    const updatedcontrols = updateobject(this.state.controls, {
+      [controlname]: updateobject(this.state.controls[controlname], {
         value: event.target.value,
-        valid: this.checkvalid(
+        valid: checkvalid(
           event.target.value,
           this.state.controls[controlname].Validation
         ),
         touch: true,
-      },
-    };
+      }),
+    });
     this.setState({
       controls: updatedcontrols,
     });
@@ -129,7 +106,7 @@ export class Auth extends Component {
     if (this.props.isauth) {
       isauthenticate = <Redirect to={this.props.redirectpath} />;
     }
-    console.log(this.props.isauth, this.props.redirectpath);
+
     return (
       <div className={classes.Auth}>
         {isauthenticate}

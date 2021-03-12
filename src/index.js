@@ -13,7 +13,10 @@ import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import thunk from "redux-thunk";
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 const rootreducer = combineReducers({
   burgerbuilder: burgerbuilderreducer,
   order: orderreducer,
