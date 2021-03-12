@@ -1,7 +1,8 @@
 import React from "react";
 import Navigationitem from "../Navigationitem/Navigationitem";
 import classes from "./Navigationitems.module.css";
-
+import Badge from "@material-ui/core/Badge";
+let i = 10;
 const Navigationitems = (props) => (
   <ul className={classes.Navigationitems}>
     <Navigationitem exact link="/">
