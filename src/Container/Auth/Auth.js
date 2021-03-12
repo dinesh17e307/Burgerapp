@@ -108,20 +108,22 @@ export class Auth extends Component {
     }
 
     return (
-      <div className={classes.Auth}>
-        {isauthenticate}
-        {errormsg}
-        <form onSubmit={this.onsubmithandler}>
-          {form}
-          <Button btntype="Success">SUBMIT</Button>
-        </form>
-        <Button
-          clicked={this.onauthswitchmodehandler}
-          btntype={this.state.issignup ? "Danger" : "Success"}
-        >
-          {" "}
-          SWITCH TO {this.state.issignup ? "SIGNUP" : "SIGNIN"}
-        </Button>
+      <div className={classes.bg}>
+        <div className={classes.Auth}>
+          {isauthenticate}
+          {errormsg}
+          <form onSubmit={this.onsubmithandler}>
+            {form}
+            <Button btntype="Success">SUBMIT</Button>
+          </form>
+          <Button
+            clicked={this.onauthswitchmodehandler}
+            btntype={this.state.issignup ? "Danger" : "Success"}
+          >
+            {" "}
+            SWITCH TO {this.state.issignup ? "SIGNUP" : "SIGNIN"}
+          </Button>
+        </div>
       </div>
     );
   }

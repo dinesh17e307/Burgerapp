@@ -5,6 +5,7 @@ import witherrorhandler from "../../Hoc/Withwraped/witherrorhandler";
 import Spinner from "../Layout/UI/Spinner/Spinner";
 import * as actions from "../../Store/actions/index";
 import { connect } from "react-redux";
+import classes from "./Orders.module.css";
 export class Orders extends Component {
   componentDidMount() {
     this.props.onorderfetch(this.props.token, this.props.userid);
@@ -25,7 +26,7 @@ export class Orders extends Component {
         );
       });
     }
-    return <div>{order}</div>;
+    return <div className={classes.orders}>{order}</div>;
   }
 }
 const mapstatetoprops = (state) => {
