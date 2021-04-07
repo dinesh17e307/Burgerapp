@@ -12,14 +12,11 @@ import authreduecr from "./Store/reducers/auth";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import thunk from "redux-thunk";
-import createSagaMiddleware from "react-saga";
-import { sagalogout } from "./Saga/auth";
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
 const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : null || compose;
-const sagaMiddleware = createSagaMiddleware();
 const rootreducer = combineReducers({
   burgerbuilder: burgerbuilderreducer,
   order: orderreducer,
@@ -27,9 +24,8 @@ const rootreducer = combineReducers({
 });
 const store = createStore(
   rootreducer,
-  composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
+  composeEnhancers(applyMiddleware(thunk))
 );
-sagaMiddleware.run(sagalogout);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
