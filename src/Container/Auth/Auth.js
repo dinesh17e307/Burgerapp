@@ -28,7 +28,7 @@ export class Auth extends Component {
         elementtype: "input",
         elementconfig: {
           type: "password",
-          placeholder: "Password",
+          placeholder: "Password length greater than 7",
         },
         value: "",
         Validation: {
@@ -116,12 +116,17 @@ export class Auth extends Component {
             {form}
             <Button btntype="Success">SUBMIT</Button>
           </form>
+
+          <p>
+            New user <strong>SIGNUP</strong> Existing user{" "}
+            <strong>SIGNIN</strong>
+          </p>
           <Button
             clicked={this.onauthswitchmodehandler}
             btntype={this.state.issignup ? "Danger" : "Success"}
           >
             {" "}
-            SWITCH TO {this.state.issignup ? "SIGNUP" : "SIGNIN"}
+            SWITCHED TO {this.state.issignup ? "SIGNUP" : "SIGNIN"}
           </Button>
         </div>
       </div>

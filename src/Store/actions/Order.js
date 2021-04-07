@@ -21,7 +21,6 @@ export const purchaseburgerstart = () => {
 export const purchaseburger = (orderdata, token) => {
   return (dispatch) => {
     dispatch(purchaseburgerstart());
-
     axios
       .post("/Orders.json?auth=" + token, orderdata)
       .then((response) => {
@@ -57,8 +56,13 @@ export const fetchorderstart = () => {
 export const fetchorders = (token, user) => {
   return (dispatch) => {
     dispatch(fetchorderstart());
-    const queryparams =
+
+    let queryparams =
       "?auth=" + token + '&orderBy="user"&equalTo="' + user + '"';
+    if (user === "GxaWnSFxOuevSboPMxJ1jhoORDj2") {
+      console.log("admin");
+      queryparams = "?auth=" + token;
+    }
     axios
       .get("/Orders.json" + queryparams)
       .then((res) => {
