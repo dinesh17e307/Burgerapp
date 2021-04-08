@@ -7,9 +7,10 @@ import * as actions from "../../Store/actions/index";
 import { connect } from "react-redux";
 import classes from "./Orders.module.css";
 const Orders = (props) => {
+  const { onorderfetch, token, userid } = props;
   useEffect(() => {
-    props.onorderfetch(props.token, props.userid);
-  }, []);
+    onorderfetch(token, userid);
+  }, [onorderfetch]);
 
   let order;
   if (props.loading) {

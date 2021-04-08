@@ -39,12 +39,12 @@ const Auth = (props) => {
     },
   });
   const [issignup, setissignup] = useState(true);
-
+  const { building, redirectpath, onsetredirectpath } = props;
   useEffect(() => {
-    if (!props.building && props.redirectpath !== "/") {
-      this.props.onsetredirectpath();
+    if (!building && redirectpath !== "/") {
+      onsetredirectpath();
     }
-  }, []);
+  }, [building, redirectpath, onsetredirectpath]);
 
   const onauthswitchmodehandler = () => {
     setissignup(!issignup);
