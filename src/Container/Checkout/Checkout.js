@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import Checkoutsummary from "../../Components/Order/Checkoutsummary/Checkoutsummary";
 import Contactform from "./Contactform/Contactform";
 import { connect } from "react-redux";
-import * as actionorder from "../../Store/actions/index";
 const Checkout = (props) => {
   const checkoutcancelhandler = () => {
     props.history.goBack();

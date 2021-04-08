@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Buildcontrols from "../../Components/Layout/Burger/Buildcontrols/Buildcontrols";
 import Burger from "../../Components/Layout/Burger/Burger";
 import Ordersummary from "../../Components/Layout/Burger/Ordersummary/Ordersummary";
@@ -10,29 +10,28 @@ import Spinner from "../../Components/Layout/UI/Spinner/Spinner";
 import * as actions from "../../Store/actions/index";
 import { connect } from "react-redux";
 
-export class Burgerbuilder extends Component {
-  state = {
-    ishow: false,
-  };
-  componentDidMount() {
-    this.props.initingredient();
-  }
-  showmodalhandler = () => {
+const Burgerbuilder = (props) => {
+  const [isshow, setisshow] = useState(false);
+  useEffect(() => {
+    props.initingredient();
+  }, []);
+
+  const showmodalhandler = () => {
     if (this.props.isauth) {
-      this.setState({ ishow: true });
+      setisshow(true);
     } else {
-      this.props.onauthredirectpath("/checkout");
-      this.props.history.push("/auth");
+      props.onauthredirectpath("/checkout");
+      props.history.push("/auth");
     }
   };
-  cancelmodalhandler = () => {
-    this.setState({ ishow: false });
+  const cancelmodalhandler = () => {
+    setisshow(false);
   };
-  continueModalHandler = () => {
-    this.props.onpurchaseinit();
-    this.props.history.push("/checkout");
+  const continueModalHandler = () => {
+    props.onpurchaseinit();
+    props.history.push("/checkout");
   };
-  purchase(ingredient) {
+  const purchase = (ingredient) => {
     const sum = Object.keys(ingredient)
       .map((key) => {
         return ingredient[key];
@@ -41,59 +40,52 @@ export class Burgerbuilder extends Component {
         return sum + cur;
       }, 0);
     return sum > 0;
+  };
+
+  const disabledinfo = {
+    ...props.ings,
+  };
+  for (let key in disabledinfo) {
+    disabledinfo[key] = disabledinfo[key] <= 0;
   }
-  render() {
-    const disabledinfo = {
-      ...this.props.ings,
-    };
-    for (let key in disabledinfo) {
-      disabledinfo[key] = disabledinfo[key] <= 0;
-    }
-    let ordersummary = null;
-    let burger = this.props.error ? (
-      <p>ingredients cant loaded</p>
-    ) : (
-      <Spinner />
-    );
-    if (this.props.ings) {
-      burger = (
-        <Aux>
-          <Burger ingredient={this.props.ings} />
-          <Buildcontrols
-            additem={this.props.oningredientadd}
-            removeitem={this.props.oningredientremove}
-            disabled={disabledinfo}
-            purchase={this.purchase(this.props.ings)}
-            purchasing={this.showmodalhandler}
-            ordered={this.state.ishow}
-            clickedbackdrop={this.cancelmodalhandler}
-            isauth={this.props.isauth}
-            price={this.props.prc}
-          />
-        </Aux>
-      );
-      ordersummary = (
-        <Ordersummary
-          ingredient={this.props.ings}
-          price={this.props.prc}
-          close={this.cancelmodalhandler}
-          cont={this.continueModalHandler}
-        />
-      );
-    }
-    return (
+  let ordersummary = null;
+  let burger = props.error ? <p>ingredients cant loaded</p> : <Spinner />;
+  if (props.ings) {
+    burger = (
       <Aux>
-        <Modal
-          ordered={this.state.ishow}
-          clickedbackdrop={this.cancelmodalhandler}
-        >
-          {ordersummary}
-        </Modal>
-        {burger}
+        <Burger ingredient={props.ings} />
+        <Buildcontrols
+          additem={props.oningredientadd}
+          removeitem={props.oningredientremove}
+          disabled={disabledinfo}
+          purchase={purchase(props.ings)}
+          purchasing={showmodalhandler}
+          ordered={isshow}
+          clickedbackdrop={cancelmodalhandler}
+          isauth={props.isauth}
+          price={props.prc}
+        />
       </Aux>
     );
+    ordersummary = (
+      <Ordersummary
+        ingredient={props.ings}
+        price={props.prc}
+        close={cancelmodalhandler}
+        cont={continueModalHandler}
+      />
+    );
   }
-}
+  return (
+    <Aux>
+      <Modal ordered={isshow} clickedbackdrop={cancelmodalhandler}>
+        {ordersummary}
+      </Modal>
+      {burger}
+    </Aux>
+  );
+};
+
 const mapstatetoprops = (state) => {
   return {
     ings: state.burgerbuilder.ingredients,
