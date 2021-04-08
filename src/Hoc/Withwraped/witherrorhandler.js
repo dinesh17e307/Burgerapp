@@ -1,50 +1,37 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../../Components/Layout/UI/Modal/Modal";
 import Aux from "../Auxiliary";
 const withErrorhandler = (WrappedComponent, axios) => {
-  return class extends Component {
-    state = {
-      error: null,
-      ismodal: false,
-    };
-    componentWillMount() {
-      axios.interceptors.request.use((req) => {
-        this.setState({
-          error: null,
-          ismodal: false,
-        });
-        return req;
-      });
-      axios.interceptors.response.use(
-        (res) => res,
-        (error) => {
-          this.setState({
-            error: error,
-            ismodal: true,
-          });
-        }
-      );
-    }
-    errorconfirmhandler = () => {
-      this.setState({
-        error: null,
-        ismodal: false,
-      });
+  return (props) => {
+    const [error, seterror] = useState(null);
+    const [ismodal, setismodal] = useState(false);
+
+    axios.interceptors.request.use((req) => {
+      seterror(null);
+      setismodal(false);
+      return req;
+    });
+    axios.interceptors.response.use(
+      (res) => res,
+      (err) => {
+        seterror(err);
+        setismodal(true);
+      }
+    );
+
+    const errorconfirmhandler = () => {
+      seterror(null);
+      setismodal(false);
     };
 
-    render() {
-      return (
-        <Aux>
-          <Modal
-            ordered={this.state.ismodal}
-            clickedbackdrop={this.errorconfirmhandler}
-          >
-            {this.state.ismodal ? this.state.error.message : null}
-          </Modal>
-          <WrappedComponent {...this.props} />
-        </Aux>
-      );
-    }
+    return (
+      <Aux>
+        <Modal ordered={ismodal} clickedbackdrop={errorconfirmhandler}>
+          {ismodal ? error.message : null}
+        </Modal>
+        <WrappedComponent {...props} />
+      </Aux>
+    );
   };
 };
 export default withErrorhandler;

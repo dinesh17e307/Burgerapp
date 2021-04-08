@@ -1,41 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import Aux from "../../Hoc/Auxiliary";
 import classes from "./Layout.module.css";
 import Sidedrawer from "./Navigation/Sidedrawer/Sidedrawer";
 import Toolbar from "./Navigation/Toolbar/Toolbar";
-class Layout extends React.Component {
-  state = {
-    sidedraw: false,
+const Layout = (props) => {
+  const [sidedrawer, setsidedrawer] = useState(false);
+  const closesidedrawhandler = () => {
+    setsidedrawer(false);
   };
-  closesidedrawhandler = () => {
-    this.setState({
-      sidedraw: false,
-    });
+  const togglesidedrawerhandler = () => {
+    setsidedrawer(!sidedrawer);
   };
-  togglesidedrawerhandler = () => {
-    this.setState({
-      sidedraw: true,
-    });
-  };
-  render() {
-    return (
-      <Aux>
-        <Toolbar
-          isauth={this.props.isauth}
-          toggle={this.togglesidedrawerhandler}
-          istog={this.state.sidedraw}
-        />
-        <Sidedrawer
-          isauth={this.props.isauth}
-          open={this.state.sidedraw}
-          closed={this.closesidedrawhandler}
-        />
-        <main className={classes.content}>{this.props.children}</main>
-      </Aux>
-    );
-  }
-}
+
+  return (
+    <Aux>
+      <Toolbar
+        isauth={props.isauth}
+        toggle={togglesidedrawerhandler}
+        istog={sidedrawer}
+      />
+      <Sidedrawer
+        isauth={props.isauth}
+        open={sidedrawer}
+        closed={closesidedrawhandler}
+      />
+      <main className={classes.content}>{props.children}</main>
+    </Aux>
+  );
+};
+
 const mapstatetoprops = (state) => {
   return {
     isauth: state.Auth.tokenid !== null,
