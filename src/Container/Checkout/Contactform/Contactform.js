@@ -101,23 +101,21 @@ const Contactform = (props) => {
     },
   });
   const [formvalid, setformvalid] = useState(false);
+  const [loading, setloading] = useState(false);
 
   useEffect(() => {
     con = { ...props.ings };
   }, []);
   const onchangeformhandler = (event, formidentifier) => {
-    const updatedformelement = updateobject(
-      this.state.orderform[formidentifier],
-      {
-        value: event.target.value,
-        touch: true,
-        valid: checkvalid(
-          event.target.value,
-          this.state.orderform[formidentifier].Validation
-        ),
-      }
-    );
-    const updatedorderform = updateobject(this.state.orderform, {
+    const updatedformelement = updateobject(orderform[formidentifier], {
+      value: event.target.value,
+      touch: true,
+      valid: checkvalid(
+        event.target.value,
+        orderform[formidentifier].Validation
+      ),
+    });
+    const updatedorderform = updateobject(orderform, {
       [formidentifier]: updatedformelement,
     });
 
@@ -135,7 +133,7 @@ const Contactform = (props) => {
       formdata[formidentifier] = orderform[formidentifier].value;
     }
     const customerdata = { ...formdata };
-    this.setState({ loading: true });
+    setloading(true);
     const Orders = {
       customer: customerdata,
       ingredient: con,

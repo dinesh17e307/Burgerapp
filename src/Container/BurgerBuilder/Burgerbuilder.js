@@ -17,7 +17,7 @@ const Burgerbuilder = (props) => {
   }, []);
 
   const showmodalhandler = () => {
-    if (this.props.isauth) {
+    if (props.isauth) {
       setisshow(true);
     } else {
       props.onauthredirectpath("/checkout");
